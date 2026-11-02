@@ -2,6 +2,8 @@
 
 **Local-first AI video/image/drama production pipeline.** 一条从「文稿 → 分镜 → 关键帧 → 图生视频 → 质检 → 配音 → 字幕 → 混音 → 成片」的可复现流水线，跑在你自己的 GPU 上（一张 RTX 4090 即可），不依赖任何特定云服务。
 
+**发布渠道**：本仓库与 https://github.com/edmund-xl/myvideo 为同一维护方的双发布渠道，内容同源、提交历史各自独立。
+
 ## 它解决什么问题
 
 现成的"AI 一键出片"工具输出质量参差、不可控；而 ComfyUI 强大但对内容创作者门槛太高。myvideo 填的是中间的空白——**把经过生产验证的工序与质量闸门代码化**：
