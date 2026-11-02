@@ -1,0 +1,20 @@
+# 产物与本地状态
+*.mp4
+*.wav
+*.png
+*.jpg
+state.json
+chosen.json
+schedule.json
+config/config.yaml
+.env
+HANDOFF.md
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db

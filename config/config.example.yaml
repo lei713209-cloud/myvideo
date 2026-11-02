@@ -1,0 +1,37 @@
+# myvideo 全局配置示例：复制为 config.yaml 后按环境填写。
+# 所有值均可被同名环境变量覆盖（前缀 MYVIDEO_）。
+
+comfy:
+  base_url: http://127.0.0.1:8188        # 本机 ComfyUI；远程走 SSH 隧道时目标写 127.0.0.1（勿写 localhost）
+  # 远程 GPU 建议：ssh -N -L 9000:127.0.0.1:8188 user@gpu-host ，然后 base_url 指 127.0.0.1:9000
+  queue_poll_s: 10
+  vram_min_free_gb: 8                    # 低于此值先 free_models() 再提交
+
+paths:
+  project: ~/Desktop/myvideo_project    # 客户端项目目录
+  server_proj: myvideo_project          # ComfyUI 侧目录（ASCII only）
+
+models:                                # 按你实例里实际文件名填写（/object_info 可查）
+  image_unet: placeholder_fp8.safetensors
+  image_text_encoder: placeholder_text_encoder.safetensors
+  image_vae: placeholder_vae.safetensors
+  video_dit: placeholder_video_dit.safetensors
+  video_upsampler: placeholder_upsampler_light.safetensors
+
+tts:
+  mode: comfy                          # comfy | script | cloud
+  script: null                         # mode=script 时指向本地 say.py 封装
+
+llm:                                   # 文稿/分镜生成 + vision 评审（可换任意 OpenAI 兼容端点）
+  base_url: null                     # 例：自建 vLLM/Ollama 的 /v1，或你的 API 服务商
+  api_key: null                      # 建议用环境变量 MYVIDEO_LLM_API_KEY，别写进文件
+  text_model: null
+  vision_model: null
+
+delivery:
+  width: 1080
+  height: 1920
+  fps: 30
+  crf: 16
+  loudness_i: -16
+  true_peak: -1.5

@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "myvideo drama project",
+  "type": "object",
+  "required": ["title", "spec", "style_contract", "episodes"],
+  "properties": {
+    "title": { "type": "string" },
+    "spec": {
+      "type": "object",
+      "required": ["orient", "fps", "loudness_i", "true_peak"],
+      "properties": {
+        "orient": { "enum": ["portrait", "landscape"] },
+        "fps": { "type": "integer", "default": 30 },
+        "loudness_i": { "type": "number", "default": -16 },
+        "true_peak": { "type": "number", "default": -1.5 },
+        "crf": { "type": "integer", "default": 16 }
+      }
+    },
+    "style_contract": { "type": "string", "description": "全剧强制拼接的视觉契约文本" },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "look_ref": { "type": "string", "description": "shared/ 下定妆图路径" },
+          "voice": { "type": "string" }
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "description": "每环节走 local(comfy/ollama/tts) 或 cloud(api)，预留多供应商",
+      "properties": {
+        "llm": { "type": "string" }, "vlm": { "type": "string" },
+        "image": { "type": "string" }, "video": { "type": "string" },
+        "tts": { "type": "string" }
+      }
+    },
+    "episodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "state"],
+        "properties": {
+          "id": { "type": "string" },
+          "state": {
+            "enum": ["draft", "script_locked", "kf_done", "kf_approved",
+                    "vid_done", "qc_passed", "vo_done", "mixed", "final", "published"]
+          }
+        }
+      }
+    }
+  }
+}

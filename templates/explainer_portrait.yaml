@@ -1,0 +1,41 @@
+# 模板：竖屏科普/口播短片（768x1344，60~90s）
+# 用法：复制为项目 storyboard，按镜头填 prompt 与旁白，交给 core+post 流水线。
+name: explainer_portrait
+spec:
+  orient: portrait            # 768x1344 生成画布；交付 cover 上变换到 1080x1920
+  fps: 30
+  master: [1536, 2688]      # 关键帧母版（4MP），Lanczos 降采样后进 i2v
+  deliver: [1080, 1920]
+  loudness_i: -16
+  true_peak: -1.5
+  crf: 16
+
+# 风格契约：全片每个关键帧/视频 prompt 末尾强制拼接，锁全片一致性
+style_contract: >-
+  Cinematic science-visualization photography, deep ambience with warm light accents,
+  volumetric light and floating particles, dark reflective surfaces, shallow depth of
+  field, photorealistic render with subtle film grain.
+
+# 质量闸门（自动评审通过线；宁松勿误杀，人工保留一票否决）
+gates:
+  keyframe_min_score: 8        # vision 评审 1~10，<8 不进 i2v
+  video_min_score: 8
+  repair_max_attempts: 2       # 同题修复超过 2 次必须换思路或人工介入
+  align_pad: 0.45              # 旁白句尾距镜头结束的最小留白（秒）
+  vo_offset: 0.25              # 旁白入点 = 镜头起点 + 该偏移（刚性排期）
+  tempo_cap: 1.5               # 单句提速上限，超限报错不静默
+  no_onscreen_text: true       # 画面内禁止生成文字（乱码=硬伤），文字一律后期字幕
+
+# 关键帧候选策略
+keyframes:
+  seeds_per_shot: 3
+  pick: grid_vision            # N 候选拼宫格 -> vision 评分/人工圈选 -> chosen.json
+
+# 镜头结构示例（字段即 storyboard.json 的 shots[]）
+shots_example:
+  - id: 1
+    scene: "开场意象：夜色城市天际线，窗口透出暖光"
+    kf_prompt: "A nighttime city skyline, warm amber window lights, distant silhouette..."
+    vo_text: "你有没有想过，身边的 AI 是怎么工作的？"
+    motion: "缓慢横移，云层流动"
+    dur: 8.0
